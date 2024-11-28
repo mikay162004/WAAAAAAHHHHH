@@ -3,71 +3,112 @@ package com.example.slambook_mundas
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slambook_mundas.databinding.ActivityHomeBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class Home : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var slamAdapter: SlamAdapter
+    private val slamList = ArrayList<Slam>() // List to store Slam objects
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set greeting using a nickname stored in SharedPreferences
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences("SlambookData", MODE_PRIVATE)
-        val nickname = sharedPreferences.getString("nickname", "Nickname")
-        binding.greeting.text = "Hi, $nickname!"
+        val sharedPreferences: SharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        val nickname = sharedPreferences.getString("name", "Guest")
+        // Get the nickname passed from OnboardActivity
 
-        // Set up "My Slam" button click listener
-        binding.myslamButton.setOnClickListener {
-            displayDataTextView(sharedPreferences)
+
+        // Set the greeting text with the nickname if it's available
+        binding.greeting.text = if (nickname != null) {
+            "Hi, $nickname!"  // Update greeting with nickname
+        } else {
+            "Hi, User!"  // Fallback if no nickname is provided
         }
 
-        // Optional: Add a click listener for "Friends" (if needed)
+        // Initialize RecyclerView
+        setupRecyclerView()
+
+        // Load saved slams from SharedPreferences
+        loadSlams()
+
+        // Set up "Create Slam" button
+        binding.createSlam.setOnClickListener {
+            val intent = Intent(this, NewSlam::class.java)
+            startActivity(intent)
+        }
+
+        // Optional: Set up "Friends" button
         binding.friendsButton.setOnClickListener {
             Toast.makeText(this, "Friends feature coming soon!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun displayDataTextView(sharedPreferences: SharedPreferences) {
-        // Retrieve saved slam data from SharedPreferences
-        val name = sharedPreferences.getString("name", "N/A")
-        val nickname = sharedPreferences.getString("nickname", "N/A")
-        val age = sharedPreferences.getString("age", "N/A")
-        val birthday = sharedPreferences.getString("birthday", "N/A")
-        val zodiacSign = sharedPreferences.getString("zodiacSign", "N/A")
-        val hobbies = sharedPreferences.getString("hobbies", "N/A")
-        val favorites = sharedPreferences.getString("favorites", "N/A")
-
-        // Locate the TextView at the bottom
-        val displayDataTextView: TextView = findViewById(R.id.displayDataTextView)
-
-        // Format the data and display it
-        val formattedData = """
-        Name: $name
-        Nickname: $nickname
-        Age: $age
-        Birthday: $birthday
-        Zodiac Sign: $zodiacSign
-        Hobbies: $hobbies
-        Favorites: $favorites
-    """.trimIndent()
-
-        displayDataTextView.text = formattedData
-
-
-        // Set OnClickListener for the create_slam button
-        binding.createSlam.setOnClickListener {
-            // Navigate to NewSlamActivity
-            val intent = Intent(this, NewSlam::class.java)
-            startActivity(intent)
+    private fun setupRecyclerView() {
+        // Initialize SlamAdapter with delete functionality
+        slamAdapter = SlamAdapter(slamList) { position ->
+            deleteSlam(position)
         }
+
+        // Set up RecyclerView
+        binding.slamRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@Home)
+            adapter = slamAdapter
+        }
+    }
+
+    private fun loadSlams() {
+        // Get SharedPreferences
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("SlambookData", MODE_PRIVATE)
+
+        // Retrieve the slam list using Gson
+        val gson = Gson()
+        val slamListType = object : TypeToken<ArrayList<Slam>>() {}.type
+        val savedSlams: ArrayList<Slam>? =
+            gson.fromJson(sharedPreferences.getString("slamList", "[]"), slamListType)
+
+        // Add saved slams to the current list
+        if (savedSlams != null) {
+            slamList.addAll(savedSlams)
+            slamAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun saveSlams() {
+        // Save the updated slam list back to SharedPreferences
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences("SlambookData", MODE_PRIVATE)
+        val gson = Gson()
+        val editor = sharedPreferences.edit()
+        editor.putString("slamList", gson.toJson(slamList))
+        editor.apply()
+    }
+
+    private fun deleteSlam(position: Int) {
+        // Remove item from the list
+        slamList.removeAt(position)
+
+        // Save updated list to SharedPreferences
+        saveSlams()
+
+        // Notify adapter of item removal
+        slamAdapter.notifyItemRemoved(position)
+
+        Toast.makeText(this, "Slam deleted!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload slams in case a new one was added
+        slamList.clear()
+        loadSlams()
     }
 }

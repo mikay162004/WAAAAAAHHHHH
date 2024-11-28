@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
+        android:fontFamily="@font/lucky_bones1"
         android:text="Hi, Nickname!"
         android:textSize="24sp"
         android:textColor="@android:color/white"
@@ -28,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/tenor_sans"
         android:text="Welcome to your personal Slambook"
         android:textSize="16sp"
         android:textColor="@android:color/white"
@@ -49,13 +51,14 @@
 
     <!-- Category Buttons -->
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:layout_marginTop="150dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/subtext"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="150dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtext">
 
         <!-- My Slam Button -->
         <Button
@@ -78,33 +81,33 @@
 
     <!-- RecyclerView to display slams -->
 
+    <!-- Bottom Navigation Icons -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/slamRecyclerView"
-        android:layout_width="365dp"
-        android:layout_height="258dp"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toTopOf="@id/displayDataTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.761"
-        tools:listitem="@layout/slam_item" />
-
-    <TextView
-        android:id="@+id/displayDataTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start"
-        android:padding="16dp"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Your Slam data will appear here" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/slam_item" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-    <!-- Bottom Navigation Icons -->
+
     <LinearLayout
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
