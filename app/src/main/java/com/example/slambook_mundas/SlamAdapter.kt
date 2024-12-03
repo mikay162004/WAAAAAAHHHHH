@@ -11,8 +11,8 @@ class SlamAdapter(
 ) : RecyclerView.Adapter<SlamAdapter.SlamViewHolder>() {
 
     inner class SlamViewHolder(binding: SlamItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val slamText = binding.slamText
-        val deleteButton = binding.deleteButton
+        val slamText = binding.slamText  // Make sure this matches the ID in your slam_item.xml
+        val deleteButton = binding.deleteButton  // Make sure this matches the ID in your slam_item.xml
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlamViewHolder {

@@ -52,7 +52,8 @@ class NewSlam : AppCompatActivity() {
     }
 
     private fun saveData() {
-        val isFriend = intent.getBooleanExtra("isFriend", false)
+        // Retrieve data from input fields
+        val isFriend = intent.getBooleanExtra("isFriend", false)  // Get from intent
         val name = binding.editName.text.toString().trim()
         val nickname = binding.editNickname.text.toString().trim()
         val ageInput = binding.editAge.text.toString().trim()
@@ -79,11 +80,8 @@ class NewSlam : AppCompatActivity() {
             return
         }
 
-        // Set `isFriend` to true if this is a friend's slam
-        val isFriend = true
-
         // Create a new Friend Slam object
-        val newSlam = Slam(name, nickname, age, birthday, zodiacSign, hobbies, favorites, isFriend = isFriend)
+        val newSlam = Slam(name, nickname, age, birthday, zodiacSign, hobbies, favorites, isFriend = true)
 
         // Retrieve existing slams from SharedPreferences
         val sharedPreferences = getSharedPreferences("SlambookData", MODE_PRIVATE)

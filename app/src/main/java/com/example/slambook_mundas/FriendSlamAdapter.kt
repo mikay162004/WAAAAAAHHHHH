@@ -1,41 +1,41 @@
 package com.example.slambook_mundas
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.slambook_mundas.databinding.SlamItemBinding
 
 class FriendSlamAdapter(
-    private val friendSlams: List<HashMap<String, String>>
+    private val slamList: ArrayList<Slam>,
+    private val deleteSlam: (Int) -> Unit
 ) : RecyclerView.Adapter<FriendSlamAdapter.FriendSlamViewHolder>() {
 
-    // Create the ViewHolder by inflating the slam_item layout
+    inner class FriendSlamViewHolder(binding: SlamItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val slamText = binding.slamText  // Correctly reference slamText
+        val deleteButton = binding.deleteButton  // Correctly reference deleteButton
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendSlamViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.slam_item, parent, false)
-        return FriendSlamViewHolder(view)
+        val binding = SlamItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FriendSlamViewHolder(binding)
     }
 
-    // Bind data to the ViewHolder
     override fun onBindViewHolder(holder: FriendSlamViewHolder, position: Int) {
-        val slam = friendSlams[position]
-        holder.bind(slam)
-    }
+        val slam = slamList[position]
+        holder.slamText.text = """
+            Name: ${slam.name}
+            Nickname: ${slam.nickname}
+            Age: ${slam.age}
+            Birthday: ${slam.birthday}
+            Zodiac Sign: ${slam.zodiacSign}
+            Hobbies: ${slam.hobbies}
+            Favorites: ${slam.favorites}
+        """.trimIndent()
 
-    // Return the number of items in the list
-    override fun getItemCount(): Int = friendSlams.size
-
-    // ViewHolder class to bind views from slam_item.xml
-    class FriendSlamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nameTextView: TextView = itemView.findViewById(R.id.slamName) // Make sure these are in slam_item.xml
-        private val nicknameTextView: TextView = itemView.findViewById(R.id.slamNickname)
-        private val messageTextView: TextView = itemView.findViewById(R.id.slamMessage)
-
-        // Bind data from the HashMap to the views
-        fun bind(slam: HashMap<String, String>) {
-            nameTextView.text = slam["name"] ?: "No Name"
-            nicknameTextView.text = slam["nickname"] ?: "No Nickname"
-            messageTextView.text = slam["message"] ?: "No Message"
+        holder.deleteButton.setOnClickListener {
+            deleteSlam(position)
         }
     }
+
+    override fun getItemCount(): Int = slamList.size
 }
