@@ -1,12 +1,15 @@
 package com.example.slambook_mundas
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.slambook_mundas.databinding.ActivityNewSlamBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.*
 
 class NewSlam : AppCompatActivity() {
 
@@ -19,13 +22,37 @@ class NewSlam : AppCompatActivity() {
         binding = ActivityNewSlamBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set onClickListener for the Save button
+        // Show DatePickerDialog when the birthday field is clicked
+        binding.editBirthday.setOnClickListener {
+            showDatePickerDialog(binding.editBirthday)
+        }
+
+        // Save button logic
         binding.saveButton.setOnClickListener {
             saveData()
         }
     }
 
+    private fun showDatePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                // Format the selected date as mm/dd/yyyy
+                val formattedDate = "${selectedMonth + 1}/$selectedDay/$selectedYear"
+                editText.setText(formattedDate)
+            },
+            year, month, day
+        )
+        datePickerDialog.show()
+    }
+
     private fun saveData() {
+        val isFriend = intent.getBooleanExtra("isFriend", false)
         val name = binding.editName.text.toString().trim()
         val nickname = binding.editNickname.text.toString().trim()
         val ageInput = binding.editAge.text.toString().trim()
@@ -52,8 +79,11 @@ class NewSlam : AppCompatActivity() {
             return
         }
 
-        // Create a new Slam object
-        val newSlam = Slam(name, nickname, age, birthday, zodiacSign, hobbies, favorites)
+        // Set `isFriend` to true if this is a friend's slam
+        val isFriend = true
+
+        // Create a new Friend Slam object
+        val newSlam = Slam(name, nickname, age, birthday, zodiacSign, hobbies, favorites, isFriend = isFriend)
 
         // Retrieve existing slams from SharedPreferences
         val sharedPreferences = getSharedPreferences("SlambookData", MODE_PRIVATE)

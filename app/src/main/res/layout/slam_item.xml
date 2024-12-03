@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:padding="16dp">
-
-<TextView
-    android:id="@+id/slamText"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="@font/tenor_sans"
-    android:textSize="16sp"
-    android:padding="8dp" />
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF"
+    android:layout_marginBottom="8dp">
 
-<Button
-    android:id="@+id/deleteButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Delete"
-    android:layout_alignParentEnd="true" />
-</RelativeLayout>
+    <!-- Display Friend's Name -->
+    <TextView
+        android:id="@+id/slamName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Friend's Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Display Friend's Nickname -->
+    <TextView
+        android:id="@+id/slamNickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nickname"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <!-- Display Message for Friend -->
+    <TextView
+        android:id="@+id/slamMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:textSize="14sp"
+        android:textColor="#555555" />
+</LinearLayout>

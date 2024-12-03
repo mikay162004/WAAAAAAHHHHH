@@ -104,7 +104,7 @@
                         android:minHeight="48dp"
                         android:textSize="18sp" />
 
-                    <!-- Birthday -->
+                    <!-- Birthday Field -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -119,9 +119,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your birthday"
+                        android:hint="mm/dd/yyyy"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:padding="10dp"
                         android:minHeight="48dp"
                         android:textSize="18sp" />
+
 
                     <!-- Zodiac Sign -->
                     <TextView
