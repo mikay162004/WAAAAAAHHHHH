@@ -3,8 +3,11 @@ package com.example.slambook_mundas
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.slambook_mundas.databinding.ActivityHomeBinding
 
@@ -16,6 +19,7 @@ class Home : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // Retrieve nickname from SharedPreferences
         val sharedPreferences: SharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
@@ -41,13 +45,14 @@ class Home : AppCompatActivity() {
         }
 
         // Handle ImageView click to go to NewSlam
-        val createSlamButton: ImageView = findViewById(R.id.create_slam)
-        createSlamButton.setOnClickListener {
+        // Access the create_slam ImageView through binding
+        binding.fragmentContainer.setOnClickListener {
             // Start the NewSlam activity when the ImageView is clicked
             val intent = Intent(this, NewSlam::class.java)
             intent.putExtra("isFriend", false) // Optional: Pass data if needed
             startActivity(intent)
         }
+
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -55,4 +60,6 @@ class Home : AppCompatActivity() {
             .replace(R.id.fragment_container, fragment)
             .commit()
     }
+
+    fun openDrawer(view: View) {}
 }

@@ -11,8 +11,8 @@ class FriendSlamAdapter(
 ) : RecyclerView.Adapter<FriendSlamAdapter.FriendSlamViewHolder>() {
 
     inner class FriendSlamViewHolder(binding: SlamItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val slamText = binding.slamText  // Correctly reference slamText
-        val deleteButton = binding.deleteButton  // Correctly reference deleteButton
+        val slamText = binding.slamText
+        val deleteButton = binding.deleteButton
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendSlamViewHolder {
@@ -25,11 +25,7 @@ class FriendSlamAdapter(
         holder.slamText.text = """
             Name: ${slam.name}
             Nickname: ${slam.nickname}
-            Age: ${slam.age}
-            Birthday: ${slam.birthday}
-            Zodiac Sign: ${slam.zodiacSign}
-            Hobbies: ${slam.hobbies}
-            Favorites: ${slam.favorites}
+           Message: ${slam.message}
         """.trimIndent()
 
         holder.deleteButton.setOnClickListener {

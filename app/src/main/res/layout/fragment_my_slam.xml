@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- RecyclerView to display saved slams -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Message when no slam is available -->
     <TextView
+        android:id="@+id/noSlamMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to My Slam !"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:text="No slams available"
+        android:visibility="gone" />
 
-    <!-- Wrap everything inside a RelativeLayout -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <!-- ImageView -->
-        <ImageView
-            android:id="@+id/create_slam"
-            android:layout_width="55dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
-            android:contentDescription="Create Slam"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/edit"
-            app:tint="@android:color/black" />
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/create_slam"
+        android:layout_width="88dp"
+        android:layout_height="79dp"
+        android:contentDescription="Create Slam"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/edit"
+        app:tint="@android:color/black" />
 
 </LinearLayout>

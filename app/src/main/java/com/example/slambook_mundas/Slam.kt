@@ -1,6 +1,7 @@
 package com.example.slambook_mundas
 
 data class Slam(
+  //  val img: String?,
     val name: String,
     val nickname: String,
     val age: Int? = null,
