@@ -90,17 +90,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lucky_bones1"
-                        android:text="Pronounce"
+                        android:text="Gender"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editPronounce"
+                        android:id="@+id/editGender"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your pronounce"
+                        android:hint="Enter your Gender"
                         android:minHeight="48dp"
                         android:textSize="18sp" />
 
@@ -171,17 +171,17 @@
                         android:textStyle="bold"
                         android:textSize="16sp" />
 
+                    <!-- Favorites -->
                     <EditText
                         android:id="@+id/edit_hobbies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:fontFamily="@font/tenor_sans"
                         android:hint="Enter your hobbies"
-                        android:layout_marginBottom="16dp"
                         android:minHeight="48dp"
                         android:textSize="18sp" />
 
-                    <!-- Favorites -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -203,6 +203,15 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Save Button -->
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_marginTop="16dp"
+                android:textSize="18sp"/>
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="match_parent"
@@ -210,6 +219,7 @@
                 android:text="Save"
                 android:layout_marginTop="16dp"
                 android:textSize="18sp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

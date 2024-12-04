@@ -3,20 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:clipToPadding="false">
 
     <!-- Slam Text -->
     <TextView
         android:id="@+id/slamText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/tenor_sans"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="Slam Text"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textColor="@color/black" />
 
-    <!-- Delete Button -->
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <!-- Edit Button -->
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#DFB6BC"
+            android:textColor="@color/white"
+            android:padding="8dp" />
+
+        <!-- Delete Button -->
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:backgroundTint="#854F6C"
+            android:textColor="@color/white"
+            android:padding="8dp" />
+    </LinearLayout>
 </LinearLayout>

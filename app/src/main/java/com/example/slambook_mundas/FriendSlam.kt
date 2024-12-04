@@ -11,11 +11,23 @@ import com.google.gson.reflect.TypeToken
 class FriendSlam : AppCompatActivity() {
 
     private lateinit var binding: ActivityFriendSlamBinding
+    private var slamPosition: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFriendSlamBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Get the slam data and position from Intent
+        val slamName = intent.getStringExtra("slamName") ?: ""
+        val slamNickname = intent.getStringExtra("slamNickname") ?: ""
+        val slamMessage = intent.getStringExtra("slamMessage") ?: ""
+        slamPosition = intent.getIntExtra("slamPosition", -1)
+
+        // Populate the fields if editing an existing slam
+        binding.editFriendName.setText(slamName)
+        binding.editFriendNickname.setText(slamNickname)
+        binding.editFriendMessage.setText(slamMessage)
 
         // Handle the Save button click
         binding.saveFriendSlamButton.setOnClickListener {
@@ -28,41 +40,37 @@ class FriendSlam : AppCompatActivity() {
         val nickname = binding.editFriendNickname.text.toString().trim()
         val message = binding.editFriendMessage.text.toString().trim()
 
-        // Validation: Ensure that name and nickname are filled in
+        // Validation
         if (name.isBlank() || nickname.isBlank()) {
             Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Create a new Friend Slam map
-        val friendSlam = hashMapOf(
-            "name" to name,
-            "nickname" to nickname,
-            "message" to message
-        )
-
-        // Retrieve existing slams from SharedPreferences
-        val sharedPreferences = getSharedPreferences("SlambookData", MODE_PRIVATE)
+        // If slamPosition is -1, it's a new slam. Otherwise, it's an edit.
+        val sharedPreferences = getSharedPreferences("SlambookData1", MODE_PRIVATE)
         val gson = Gson()
-        val slamListType = object : TypeToken<ArrayList<HashMap<String, String>>>() {}.type
-        val existingSlams: ArrayList<HashMap<String, String>> =
-            gson.fromJson(sharedPreferences.getString("slamList", "[]"), slamListType)
-                ?: arrayListOf()
+        val slamListType = object : TypeToken<ArrayList<FriendSlamDataClass>>() {}.type
+        val existingSlamsJson = sharedPreferences.getString("slamList", "[]")
+        val slamList: ArrayList<FriendSlamDataClass> = gson.fromJson(existingSlamsJson, slamListType)
 
-        // Add the new friend slam to the list
-        existingSlams.add(friendSlam)
+        if (slamPosition == -1) {
+            // Add new slam
+            val newSlam = FriendSlamDataClass(name, nickname, message)
+            slamList.add(newSlam)
+        } else {
+            // Update existing slam
+            slamList[slamPosition!!] = FriendSlamDataClass(name, nickname, message)
+        }
 
-        // Save the updated list back to SharedPreferences
+        // Save the updated slam list to SharedPreferences
         val editor = sharedPreferences.edit()
-        editor.putString("slamList", gson.toJson(existingSlams))
+        editor.putString("slamList", gson.toJson(slamList))
         editor.apply()
 
         // Show success message
-        Toast.makeText(this, "Friend Slam saved!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Slam saved!", Toast.LENGTH_SHORT).show()
 
-        // Redirect to the Home activity
-        val intent = Intent(this, Home::class.java)
-        startActivity(intent)
-        finish() // Close the FriendSlam activity
+        // Close the activity
+        finish()
     }
 }

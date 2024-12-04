@@ -22,6 +22,24 @@ class NewSlam : AppCompatActivity() {
         binding = ActivityNewSlamBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Check if it's an edit action
+        val slamJson = intent.getStringExtra("slam")
+        val position = intent.getIntExtra("position", -1)
+
+        if (slamJson != null && position != -1) {
+            val slam = Gson().fromJson(slamJson, Slam::class.java)
+
+            // Populate fields with existing slam data
+            binding.editName.setText(slam.name)
+            binding.editNickname.setText(slam.nickname)
+            binding.editAge.setText(slam.age.toString())
+            binding.editGender.setText(slam.gender)
+            binding.editBirthday.setText(slam.birthday)
+            binding.editZodiacSign.setText(slam.zodiacSign)
+            binding.editHobbies.setText(slam.hobbies)
+            binding.editFavorites.setText(slam.favorites)
+        }
+
         // Show DatePickerDialog when the birthday field is clicked
         binding.editBirthday.setOnClickListener {
             showDatePickerDialog(binding.editBirthday)
@@ -29,7 +47,12 @@ class NewSlam : AppCompatActivity() {
 
         // Save button logic
         binding.saveButton.setOnClickListener {
-            saveData()
+            saveData(position)
+        }
+
+        // Cancel button logic
+        binding.cancelButton.setOnClickListener {
+            finish() // Close the activity without saving changes
         }
     }
 
@@ -51,9 +74,8 @@ class NewSlam : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    private fun saveData() {
+    private fun saveData(position: Int?) {
         // Retrieve data from input fields
-        val isFriend = intent.getBooleanExtra("isFriend", false)  // Get from intent
         val name = binding.editName.text.toString().trim()
         val nickname = binding.editNickname.text.toString().trim()
         val ageInput = binding.editAge.text.toString().trim()
@@ -80,29 +102,41 @@ class NewSlam : AppCompatActivity() {
             return
         }
 
-        // Create a new Friend Slam object
+        // Create a new Slam object
         val newSlam = Slam(name, nickname, age, birthday, zodiacSign, hobbies, favorites, isFriend = true)
 
         // Retrieve existing slams from SharedPreferences
         val sharedPreferences = getSharedPreferences("SlambookData", MODE_PRIVATE)
         val gson = Gson()
         val slamListType = object : TypeToken<ArrayList<Slam>>() {}.type
-        val existingSlams: ArrayList<Slam> =
+        val slamList: ArrayList<Slam> =
             gson.fromJson(sharedPreferences.getString("slamList", "[]"), slamListType)
                 ?: arrayListOf()
 
-        // Add the new slam to the list
-        existingSlams.add(newSlam)
+        if (position != null && position != -1) {
+            // Edit existing slam at the provided position
+            slamList[position] = newSlam
+        } else {
+            // Add new slam if no position was provided
+            slamList.add(newSlam)
+        }
 
         // Save the updated list back to SharedPreferences
         val editor = sharedPreferences.edit()
-        editor.putString("slamList", gson.toJson(existingSlams))
+        editor.putString("slamList", gson.toJson(slamList))
         editor.apply()
 
-        // Show confirmation
-        Toast.makeText(this, "Slam saved!", Toast.LENGTH_SHORT).show()
+        // Show confirmation message
+        Toast.makeText(this, if (position != null && position != -1) "Slam updated!" else "Slam saved!", Toast.LENGTH_SHORT).show()
 
-        // Redirect to Home
+        // Set the result to return to MySlamFragment (position for editing)
+        val resultIntent = Intent().apply {
+            putExtra("updated_text", newSlam.name)  // Return the updated slam name (or other data if needed)
+            putExtra("slam_position", position ?: -1)  // If editing, return position
+        }
+        setResult(RESULT_OK, resultIntent)
+
+        // Redirect back to Home (or any other activity)
         val intent = Intent(this, Home::class.java)
         startActivity(intent)
         finish()

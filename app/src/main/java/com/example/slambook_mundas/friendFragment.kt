@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.slambook_mundas.databinding.FragmentFriendBinding
+import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class FriendFragment : Fragment() {
@@ -19,7 +19,7 @@ class FriendFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var slamAdapter: FriendSlamAdapter
-    private var slamList: ArrayList<Slam> = ArrayList()
+    private var slamList = mutableListOf<FriendSlamDataClass>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,38 +27,41 @@ class FriendFragment : Fragment() {
     ): View? {
         _binding = FragmentFriendBinding.inflate(inflater, container, false)
 
-        // Load saved slams (from SharedPreferences)
+        // Load saved slams from SharedPreferences
         loadSavedSlams()
 
-        // Setup RecyclerView with FriendSlamAdapter
-        slamAdapter = FriendSlamAdapter(slamList) { position ->
-            // Handle slam deletion
-            deleteSlam(position)
-        }
+        // Initialize adapter with edit and delete handlers
+        slamAdapter = FriendSlamAdapter(slamList, { position ->
+            editSlam(position) // Handle editing
+        }, { position ->
+            deleteSlam(position) // Handle deletion
+        })
 
+        // Set up RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = slamAdapter
 
         // Handle ImageView click to navigate to FriendSlam activity
         val createSlamButton: ImageView = binding.create
         createSlamButton.setOnClickListener {
-            // Start FriendSlam activity
             val intent = Intent(activity, FriendSlam::class.java)
-            intent.putExtra("isFriend", true)  // Pass data indicating it's a friend slam
+            intent.putExtra("isFriend", true) // Indicate it's a friend slam
             startActivity(intent)
         }
 
         return binding.root
     }
 
-    // Function to load saved slams from SharedPreferences
+    // Load saved slams from SharedPreferences
     private fun loadSavedSlams() {
-        val sharedPreferences = activity?.getSharedPreferences("SlambookData", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences =
+            activity?.getSharedPreferences("SlambookData1", AppCompatActivity.MODE_PRIVATE)
         val gson = Gson()
-        val slamListType = object : TypeToken<ArrayList<Slam>>() {}.type
+        val slamListType = object : TypeToken<ArrayList<FriendSlamDataClass>>() {}.type
         val savedSlamsJson = sharedPreferences?.getString("slamList", "[]")
         slamList = gson.fromJson(savedSlamsJson, slamListType) ?: ArrayList()
 
+        // Show or hide "No Slam" message
         if (slamList.isEmpty()) {
             binding.noSlamMessage.visibility = View.VISIBLE
         } else {
@@ -66,30 +69,43 @@ class FriendFragment : Fragment() {
         }
     }
 
-    // Function to delete a slam
+    // Delete a slam
     private fun deleteSlam(position: Int) {
-        slamList.removeAt(position)  // Remove the slam at the specified position
-        updateSharedPreferences()  // Update SharedPreferences after deletion
-        slamAdapter.notifyItemRemoved(position)  // Notify adapter to update the RecyclerView
+        slamList.removeAt(position)
+        updateSharedPreferences() // Update SharedPreferences after deletion
+        slamAdapter.notifyItemRemoved(position)
     }
 
-    // Function to update SharedPreferences after deletion
+    // Edit a slam message
+    private fun editSlam(position: Int) {
+        val slam = slamList[position]
+
+        // Pass slam data (including position) to FriendSlam activity
+        val intent = Intent(activity, FriendSlam::class.java)
+        intent.putExtra("slamName", slam.name)
+        intent.putExtra("slamNickname", slam.nickname)
+        intent.putExtra("slamMessage", slam.message)
+        intent.putExtra("slamPosition", position) // Pass position for editing
+        startActivity(intent)
+    }
+
+    // Update SharedPreferences after modifying the slam list
     private fun updateSharedPreferences() {
-        val sharedPreferences = activity?.getSharedPreferences("SlambookData", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences =
+            activity?.getSharedPreferences("SlambookData1", AppCompatActivity.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
         val gson = Gson()
-        val updatedSlamsJson = gson.toJson(slamList)  // Convert the updated slam list to JSON
-        editor?.putString("slamList", updatedSlamsJson)  // Save updated slam list in SharedPreferences
-        editor?.apply()
+        val updatedSlamsJson = gson.toJson(slamList)
+        editor?.putString("slamList", updatedSlamsJson)
+        editor?.apply() // Save changes
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null  // Clear the binding reference when the view is destroyed
+        _binding = null
     }
 
     companion object {
-        // Simplified newInstance method for creating the fragment
         fun newInstance(): FriendFragment {
             return FriendFragment()
         }
