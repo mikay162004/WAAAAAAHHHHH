@@ -18,42 +18,58 @@ class MySlamFragment : Fragment() {
     private var _binding: FragmentMySlamBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var slamAdapter: SlamAdapter
     private var slamList = mutableListOf<Slam>()
+    private lateinit var slamAdapter: SlamAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMySlamBinding.inflate(inflater, container, false)
 
-        // Load saved slams
-        loadSavedSlams()
-
-        // Initialize SlamAdapter
-        slamAdapter = SlamAdapter(slamList, { position ->
-            deleteSlam(position)
-        }, { position ->
-            editSlam(position)  // Start editing
-        })
+        slamAdapter = SlamAdapter(
+            slamList,
+            requireContext(),
+            { position -> editSlam(position) },
+            { position -> deleteSlam(position) }
+        )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = slamAdapter
 
+        loadSavedSlams()
+
         return binding.root
     }
 
+    private fun loadSavedSlams() {
+        val sharedPreferences =
+            activity?.getSharedPreferences("SlambookData", AppCompatActivity.MODE_PRIVATE)
+
+        sharedPreferences?.let {
+            val gson = Gson()
+            val slamListType = object : TypeToken<ArrayList<Slam>>() {}.type
+            val savedSlamsJson = it.getString("slamList", "[]")
+            val loadedSlams: MutableList<Slam> =
+                gson.fromJson(savedSlamsJson, slamListType) ?: ArrayList()
+
+            slamAdapter.updateList(loadedSlams)
+            toggleNoSlamsMessage()
+        }
+    }
+
     private fun editSlam(position: Int) {
+        if (position < 0 || position >= slamList.size) return
+
         val slam = slamList[position]
 
-        // Create an intent to navigate to the NewSlam activity
-        val intent = Intent(activity, NewSlam::class.java)
+        val intent = Intent(activity, NewSlam::class.java).apply {
+            putExtra("slam_position", position)
+            putExtra("slam_name", slam.name)
+            putExtra("slam_nickname", slam.nickname)
+            putExtra("slam_age", slam.age)
+        }
 
-        // Pass slam data and position for updating later
-        intent.putExtra("slam_text", slam.text)  // Pass the current slam text
-        intent.putExtra("slam_position", position)  // Pass the position of the slam to update it
-
-        // Start the NewSlam activity for result
         editSlamLauncher.launch(intent)
     }
 
@@ -61,63 +77,68 @@ class MySlamFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 val data = result.data
-                val updatedText = data?.getStringExtra("updated_text")
-                val position = data?.getIntExtra("slam_position", -1)
+                val position = data?.getIntExtra("slam_position", -1) ?: -1
 
-                if (updatedText != null && position != null && position >= 0) {
-                    // Update the slam text with the edited text
-                    slamList[position].text = updatedText
+                if (position >= 0 && position < slamList.size) {
+                    val slam = slamList[position]
+                    slam.name = data?.getStringExtra("slam_name") ?: slam.name
 
-                    // Update SharedPreferences with the updated slam list
                     updateSharedPreferences()
-
-                    // Notify the adapter to refresh the UI
                     slamAdapter.notifyItemChanged(position)
+                    toggleNoSlamsMessage()
                 }
             }
         }
 
-    private fun loadSavedSlams() {
-        val sharedPreferences =
-            activity?.getSharedPreferences("SlambookData", AppCompatActivity.MODE_PRIVATE)
-        val gson = Gson()
-        val slamListType = object : TypeToken<ArrayList<Slam>>() {}.type
-        val savedSlamsJson = sharedPreferences?.getString("slamList", "[]")
-        slamList = gson.fromJson(savedSlamsJson, slamListType) ?: ArrayList()
+    private fun deleteSlam(position: Int) {
+        if (position < 0 || position >= slamList.size) return
 
-        if (slamList.isEmpty()) {
-            binding.noSlamMessage.visibility = View.VISIBLE
-        } else {
-            binding.noSlamMessage.visibility = View.GONE
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Delete Slam")
+        builder.setMessage("Are you sure you want to delete this slam?")
+
+        builder.setPositiveButton("Yes") { _, _ ->
+            slamList.removeAt(position)
+            updateSharedPreferences()
+            slamAdapter.notifyItemRemoved(position)
+            toggleNoSlamsMessage()
         }
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.create().show()
+    }
+
+    private fun toggleNoSlamsMessage() {
+        binding.noSlamMessage.visibility = if (slamList.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun updateSharedPreferences() {
         val sharedPreferences =
             activity?.getSharedPreferences("SlambookData", AppCompatActivity.MODE_PRIVATE)
-        val editor = sharedPreferences?.edit()
-        val gson = Gson()
-        val updatedSlamsJson = gson.toJson(slamList)
-        editor?.putString("slamList", updatedSlamsJson)
-        editor?.apply()
+        sharedPreferences?.edit()?.apply {
+            val gson = Gson()
+            val updatedSlamsJson = gson.toJson(slamList)
+            putString("slamList", updatedSlamsJson)
+            apply()
+        }
     }
 
-    private fun deleteSlam(position: Int) {
-        slamList.removeAt(position)
-        updateSharedPreferences()
-        slamAdapter.notifyItemRemoved(position)
+    override fun onResume() {
+        super.onResume()
+        loadSavedSlams()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     companion object {
         fun newInstance(): MySlamFragment {
             return MySlamFragment()
         }
     }
-
-
-    }
-
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/usback"
+    tools:context=".AboutUs">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#faf0ea"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.47">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:text="Welcome to Syllavo – your ultimate space for collecting and cherishing memories with friends!\n\nInspired by the Greek word \syllavos\ (σύλλαβο), meaning \syllable\ or \collection,\ Syllavo is designed to be a digital sanctuary where every page tells a story, every entry holds a piece of your journey, and every memory is preserved forever.\n\nAt Syllavo, we believe that the best moments in life are made even better when shared. Whether it's heartfelt messages, inside jokes, favorite things, or dreams for the future, this platform is here to gather and celebrate the connections that make life meaningful.\n\nJoin us in creating a vibrant collection of thoughts, laughter, and love. With Syllavo, your friendships aren't just remembered – they're celebrated.\n\nLet’s write your story, one memory at a time."
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:fontFamily="@font/lucky_bones1"
+        android:textColor="#000000"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:justificationMode="inter_word"
+        android:breakStrategy="balanced"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

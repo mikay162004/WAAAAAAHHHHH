@@ -1,62 +1,81 @@
 package com.example.slambook_mundas
 
+
+import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.slambook_mundas.databinding.SlamItemBinding
 
 class SlamAdapter(
-    private val slamList: MutableList<Slam>,
-    private val deleteSlam: (Int) -> Unit,
-    private val editSlam: (Int) -> Unit
+    private var slamList: MutableList<Slam>,
+    private val context: Context, // Context to start activities
+    private val onEdit: (Int) -> Unit, // Edit action callback
+    private val onDelete: (Int) -> Unit,
 ) : RecyclerView.Adapter<SlamAdapter.SlamViewHolder>() {
 
-    inner class SlamViewHolder(binding: SlamItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val slamText = binding.slamText
-        val deleteButton = binding.deleteButton
-        val editButton = binding.editButton
+    // ViewHolder class
+    inner class SlamViewHolder(private val itemBinding: SlamItemBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+
+        fun bind(slam: Slam, position: Int) {
+            // Bind nickname to TextView
+            itemBinding.slamNickname.text = slam.nickname
+
+            // Load image using Coil (with placeholders and error fallback)
+            slam.imageUri?.let { uri ->
+                itemBinding.slamImage.load(uri) {
+                    placeholder(R.drawable.user) // Placeholder image
+                    error(R.drawable.ic_launcher_background) // Fallback image
+                }
+            } ?: run {
+                itemBinding.slamImage.setImageResource(R.drawable.ic_launcher_background)
+            }
+
+            // Edit button action
+            itemBinding.editButton.setOnClickListener {
+                onEdit(position)
+            }
+
+            // Delete button action
+            itemBinding.deleteButton.setOnClickListener {
+                onDelete(position)
+            }
+
+            // CardView click action to navigate to MySlamInfo
+            itemBinding.root.setOnClickListener {
+                val intent = Intent(context, MySlamInfo::class.java).apply {
+                    putExtra("slam_info", slam) // Pass the Slam object
+                }
+                context.startActivity(intent)
+            }
+        }
+
+        private fun putExtra(s: String, slam: Slam) {
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SlamViewHolder {
-        val binding = SlamItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SlamViewHolder(binding)
+        val itemBinding =
+            SlamItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SlamViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: SlamViewHolder, position: Int) {
-        val slam = slamList[position]
-        holder.slamText.text = """
-            Name: ${slam.name}
-            Nickname: ${slam.nickname}
-            Age: ${slam.age}
-            Gender: ${slam.gender}
-            Birthday: ${slam.birthday}
-            Zodiac Sign: ${slam.zodiacSign}
-            Hobbies: ${slam.hobbies}
-            Favorites: ${slam.favorites}
-        """.trimIndent()
-
-        holder.deleteButton.setOnClickListener {
-            deleteSlam(position)  // Handle delete
-        }
-
-        // Handle edit button click
-        holder.editButton.setOnClickListener {
-            // Send slam data and position to the FriendSlam activity
-            val context = holder.itemView.context
-            val intent = Intent(context, FriendSlam::class.java)
-            intent.putExtra("slamName", slam.name)
-            intent.putExtra("slamNickname", slam.nickname)
-            intent.putExtra("slamAge", slam.age)
-            intent.putExtra("slamGender", slam.gender)
-            intent.putExtra("slamBirthday", slam.birthday)
-            intent.putExtra("slamZodiac Sign", slam.zodiacSign)
-            intent.putExtra("slamHobbies", slam.hobbies)
-            intent.putExtra("slamFavorites", slam.favorites)
-            intent.putExtra("slamPosition", position) // Pass position for editing
-            context.startActivity(intent)
-        }
+        holder.bind(slamList[position], position)
     }
 
     override fun getItemCount(): Int = slamList.size
+
+    fun updateList(newSlamList: List<Slam>) {
+        slamList.clear()
+        slamList.addAll(newSlamList)
+        notifyDataSetChanged()
+        // Log the new list for debugging
+        Log.d("SlamAdapter", "Updated list: $newSlamList")
+    }
 }

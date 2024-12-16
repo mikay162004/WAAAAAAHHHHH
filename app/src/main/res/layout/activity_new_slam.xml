@@ -17,200 +17,373 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Name -->
-            <androidx.cardview.widget.CardView
+            <!-- Name Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/imageViewProfile"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <Button
+                    android:id="@+id/buttonUploadImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Image"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your name"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Name"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                <!-- Nickname -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Nickname"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/edit_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your name"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/edit_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your nickname"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <!-- Nickname -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Nickname"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                <!-- Age -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Age"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/edit_nickname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your nickname"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/editAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:maxLength="2"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your age"
+                    android:inputType="number"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <!-- Age -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Age"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                <!-- Gender Spinner -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Gender"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/editAge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your age"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Gender"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                <Spinner
+                    android:id="@+id/gender_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/gender_array"/>
 
-                    <EditText
-                        android:id="@+id/editGender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your Gender"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
+                <!-- Birthday -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Birthday"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    <!-- Birthday Field -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Birthday"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/edit_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="mm/dd/yyyy"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:padding="10dp"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <EditText
-                        android:id="@+id/edit_birthday"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="mm/dd/yyyy"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:padding="10dp"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
+                <!-- Zodiac Sign -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Zodiac Sign"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/edit_zodiac_sign"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your zodiac sign"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-                    <!-- Zodiac Sign -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Zodiac Sign"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edit_zodiac_sign"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your zodiac sign"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Hobbies and Favorites -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
 
-                <LinearLayout
+                <!-- Hobbies -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Hobbies"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/edit_hobbies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your hobbies"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <!-- Hobbies -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Hobbies"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                <!-- Interests -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Interests"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
 
-                    <!-- Favorites -->
-                    <EditText
-                        android:id="@+id/edit_hobbies"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your hobbies"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
+                <EditText
+                    android:id="@+id/edit_interests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your interests"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lucky_bones1"
-                        android:text="Favorites"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                <!-- Sports -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Sports"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
 
-                    <EditText
-                        android:id="@+id/edit_favorites"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/tenor_sans"
-                        android:hint="Enter your favorites"
-                        android:layout_marginBottom="16dp"
-                        android:minHeight="48dp"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                <EditText
+                    android:id="@+id/edit_sports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite sports"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
 
-            <!-- Save Button -->
+                <!-- Color -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/edit_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite color"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Food -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Food"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_food"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite food"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Movie -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Movie"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite movie"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Series -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Series"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_series"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite series"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Book -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Book"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_book"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite book"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Music Genre -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Music Genre"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_music_genre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite music genre"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- TV Show -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="TV Show"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_tv_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite TV show"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+                <!-- Season -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucky_bones1"
+                    android:text="Season"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edit_season"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/tenor_sans"
+                    android:hint="Enter your favorite season"
+                    android:minHeight="48dp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <!-- Save and Cancel Buttons -->
             <Button
                 android:id="@+id/cancel_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
                 android:layout_marginTop="16dp"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/save_button"

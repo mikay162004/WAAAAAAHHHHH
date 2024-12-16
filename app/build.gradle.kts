@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application) // Android application plugin
     alias(libs.plugins.kotlin.android)      // Kotlin plugin
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("io.coil-kt:coil:2.2.2")
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation ("com.google.android.material:material:1.9.0")

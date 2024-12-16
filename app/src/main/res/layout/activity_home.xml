@@ -5,22 +5,22 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/en"
+    android:background="@color/white"
     tools:context=".Home">
 
     <!-- Greeting Message -->
     <TextView
         android:id="@+id/greeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="163dp"
+        android:layout_height="25dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
-        android:fontFamily="@font/lucky_bones1"
+        android:fontFamily="@font/boldfont"
         android:text="Hi, Nickname!"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Subtext below greeting -->
     <TextView
@@ -32,7 +32,7 @@
         android:fontFamily="@font/tenor_sans"
         android:text="Welcome to your personal Slambook"
         android:textSize="16sp"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/greeting"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -44,11 +44,11 @@
         android:id="@+id/user_profile"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/white"
         android:contentDescription="User Profile"
-        android:src="@drawable/user"
+        android:src="@drawable/usericon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +56,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

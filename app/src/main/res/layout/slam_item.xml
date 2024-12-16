@@ -1,7 +1,7 @@
-<!-- slam_item.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/white"
@@ -9,18 +9,37 @@
     android:elevation="4dp"
     android:clipToPadding="false">
 
-    <!-- Slam Text -->
-    <TextView
-        android:id="@+id/slamText"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/tenor_sans"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="Slam Text"
-        android:textSize="16sp"
-        android:textColor="@color/black" />
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
+    <!-- Horizontal layout for ImageView and TextView -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start">
 
+        <ImageView
+            android:id="@+id/slamImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/slamNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Nickname"
+            android:textSize="18sp" />
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Horizontal layout for buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

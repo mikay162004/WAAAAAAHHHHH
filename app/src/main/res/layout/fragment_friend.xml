@@ -1,45 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="382dp"
-        android:layout_height="414dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="410dp">
+    <!-- RecyclerView to display saved slams -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="444dp">
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/purcard"
-                android:scaleType="fitXY"
-                app:layout_constraintTop_toTopOf="parent" />
-        <!-- RecyclerView to display saved slams -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="25dp"
-                android:fontFamily="@font/lucky_bones2"
-                android:background="@android:color/transparent"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2"
-                app:layout_constraintVertical_bias="0.503" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="384dp"
+            android:layout_height="442dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/lucky_bones2"
+            android:padding="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Message when no slam is available -->
     <TextView
@@ -50,23 +37,25 @@
         android:text="No slams available"
         android:visibility="gone" />
 
+    <!-- ImageView for displaying the first slam image -->
+    <ImageView
+        android:id="@+id/friendImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:contentDescription="First Slam Image"
+        android:visibility="gone" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+    <!-- Floating Action Button for creating a slam -->
+    <ImageView
+        android:id="@+id/create"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:contentDescription="Create Slam"
+        android:layout_gravity="bottom|right"
+        app:srcCompat="@drawable/edit"
+        app:tint="@android:color/black" />
 
-
-        <ImageView
-            android:id="@+id/create"
-            android:layout_width="50dp"
-            android:layout_height="83dp"
-            android:contentDescription="Create Slam"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/edit"
-            app:tint="@android:color/black" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
